@@ -108,31 +108,18 @@ void view_pi(map<int, int> pi)
   }
 }
 
-void relax(int u, int v, int w, map<int, map<int, int> > graph, map<int, int> &d, map<int, int> &pi, map<int, int> &q)
+void relax(int u, int v, int w, map<int, int> &d, map<int, int> &pi)
 {
-  int du = d[u];
-  int dv = d[v];
-  map<int, map<int, int> >::iterator u_list = graph.find(u);
-  int w_uv = INT_MAX;
-  if(u_list != graph.end())
-  {
-    map<int, int>::iterator w_v = u_list->second.find(v);
-    if(w_v != u_list->second.end())
-    {
-      w_uv = w_v->second;
-    }
-  }
-  if(dv > du + w_uv)
-  {
-    d[v] = du + w_uv;
-    q[v] = du + w_uv;
+  if(d[v] > d[u] + w){
+    d[v] = d[u] + w;
     pi[v] = u;
   }
 }
 
-void relax_with_history(int u, int v, int w, map<int, map<int, int> > graph, map<int, vector<int> > &dd, map<int, int> &d, map<int, int> &pi, map<int, int> &q)
+void relax_with_history(int u, int v, int w, map<int, vector<int> > &dd, map<int, int> &d, map<int, int> &pi)
 {
-  relax(u, v, w, graph, d, pi, q);
+  relax(u, v, w, d, pi);
+  dd[u].push_back(d[u]);
   /*
   for(map<int, vector<int> >::iterator it = dd.begin(); it != dd.end(); it++)
   {
@@ -157,7 +144,7 @@ bool bellman_ford(map<int, map<int, int> > graph, int s, map<int, vector<int> > 
       v = it2->first;
       w = it2->second;
       cout << u << ", " << v << ", " << w << endl;
-      //relax_with_history(u, v, w, graph, dd, d, pi, q);
+      relax_with_history(u, v, w, dd, d, pi);
     }
   }
   return true;
