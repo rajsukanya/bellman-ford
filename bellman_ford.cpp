@@ -82,8 +82,9 @@ void view_graph(map<int, map<int, int> > graph)
 
 void initialize_single_source(map<int, map<int, int> > graph, int s, map<int, int> &d, map<int, int> &pi, map<int, vector<int> > &dd)
 {
-  vector<int> infinity;
+  vector<int> infinity, zero;
   infinity.push_back(INT_MAX);
+  zero.push_back(0);
   for(map<int, map<int, int> >::iterator it = graph.begin(); it != graph.end(); it++){
     d[it->first] = INT_MAX;
     pi[it->first] = INT_MAX;
@@ -91,6 +92,7 @@ void initialize_single_source(map<int, map<int, int> > graph, int s, map<int, in
   }
   d[s] = 0;
   pi[s] = INT_MAX;
+  dd[s] = zero;
 }
 
 void view_d(map<int, int> d)
@@ -113,13 +115,10 @@ void view_pi(map<int, int> pi)
 
 void relax(int u, int v, int w, map<int, int> &d, map<int, int> &pi)
 {
-  cout << "relax: " << u << ", " << v << ", " << w << ", " << d[v] << ", " << d[u] << endl;
   if(d[u] != INT_MAX){
     if(d[v] > d[u] + w){
-      cout << "updating d[v] " << d[v] << " with " << d[u]+w << endl;
       d[v] = d[u] + w;
       pi[v] = u;
-      cout << "now: d[" << v << "]=" << d[v] << endl;
     }
   }
 }
@@ -127,12 +126,7 @@ void relax(int u, int v, int w, map<int, int> &d, map<int, int> &pi)
 void relax_with_history(int u, int v, int w, map<int, vector<int> > &dd, map<int, int> &d, map<int, int> &pi)
 {
   relax(u, v, w, d, pi);
-  dd[u].push_back(d[u]);
-  cout << "\n==============\n";
-  view_d(d);
-  cout << "\n==============\n";
-  view_bellman_ford_solution(dd);
-  cout << "\n==============\n";
+  dd[v].push_back(d[v]);
 }
 
 bool bellman_ford(map<int, map<int, int> > graph, int s, map<int, vector<int> > &dd)
@@ -147,7 +141,6 @@ bool bellman_ford(map<int, map<int, int> > graph, int s, map<int, vector<int> > 
     {
       v = it2->first;
       w = it2->second;
-      cout << u << ", " << v << ", " << w << endl;
       relax_with_history(u, v, w, dd, d, pi);
     }
   }

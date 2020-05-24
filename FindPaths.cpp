@@ -14,9 +14,7 @@ int main(int argc, char **argv)
   const string vertex(argv[2]);
   char *ch = const_cast<char*>(vertex.c_str());
   const int s = atoi(ch);
-  cout << "input: " << graph_filename << ", " << s << endl;
   map<int, map<int, int> > graph = load_graph(graph_filename);
-  view_graph(graph);
   map<int, vector<int> > dd;
   if(bellman_ford(graph, s, dd)){
     view_bellman_ford_solution(dd);
