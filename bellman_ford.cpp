@@ -203,7 +203,7 @@ void view_pi(map<int, int> pi)
 }
 */
 
-void relax(map<int, map<int, int> > graph, int u, int v, map<int, int> &d, map<int, int> &pi, map<int, int> &q)
+void relax(int u, int v, int w, map<int, map<int, int> > graph, map<int, int> &d, map<int, int> &pi, map<int, int> &q)
 {
   int du = d[u];
   int dv = d[v];
@@ -225,11 +225,18 @@ void relax(map<int, map<int, int> > graph, int u, int v, map<int, int> &d, map<i
   }
 }
 
-void relax_with_history(map<int, vector<int> > dd, int u, int v, int w, map<int, int> &d, map<int, int> &pi, map<int, int> &q)
+void relax_with_history(int u, int v, int w, map<int, vector<int> > &dd, map<int, int> &d, map<int, int> &pi, map<int, int> &q)
 {
-  relax(dd, u, v, d, pi, q);
-  //for(map<int, vector<int> >::iterator it = dd.begin(); it != dd.end(); it++)
-  //dd[v].insert(d[v]);
+  relax(u, v, w, dd, d, pi, q);
+  /*
+  for(map<int, vector<int> >::iterator it = dd.begin(); it != dd.end(); it++)
+  {
+    for()
+    {
+      //dd[v].insert(d[v]);
+    }
+  }
+  */
 }
 
 bool bellman_ford(map<int, map<int, int> > graph, int w, int s, int u, int v, map<int, int> &d, map <int, int> &pi, map<int, int> &q)
@@ -237,9 +244,12 @@ bool bellman_ford(map<int, map<int, int> > graph, int w, int s, int u, int v, ma
   initialize_single_source(graph, s, d, pi);
   for(map<int, map<int, int> >::iterator it = graph.begin(); it != graph.end(); it++)
   {
+    u = it->first;
     for(map<int, int>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++)
     {
-      relax_with_history(graph, u, v, w, d, pi, q);
+      v = it2->first;
+      w = it2->second;
+      relax_with_history(u, v, w, graph, d, pi, q);
     }
   }
   for(map<int, int>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++)
