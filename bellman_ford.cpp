@@ -114,7 +114,7 @@ void view_pi(map<int, int> pi)
 void relax(int u, int v, int w, map<int, int> &d, map<int, int> &pi)
 {
   cout << "relax: " << u << ", " << v << ", " << w << ", " << d[v] << ", " << d[u] << endl;
-  if(d[u]!=INT_MAX){
+  if(d[u] != INT_MAX){
     if(d[v] > d[u] + w){
       cout << "updating d[v] " << d[v] << " with " << d[u]+w << endl;
       d[v] = d[u] + w;
@@ -128,6 +128,11 @@ void relax_with_history(int u, int v, int w, map<int, vector<int> > &dd, map<int
 {
   relax(u, v, w, d, pi);
   dd[u].push_back(d[u]);
+  cout << "\n==============\n";
+  view_d(d);
+  cout << "\n==============\n";
+  view_bellman_ford_solution(dd);
+  cout << "\n==============\n";
 }
 
 bool bellman_ford(map<int, map<int, int> > graph, int s, map<int, vector<int> > &dd)
