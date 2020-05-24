@@ -144,8 +144,10 @@ void relax_with_history(int u, int v, int w, map<int, map<int, int> > graph, map
   */
 }
 
-bool bellman_ford(map<int, map<int, int> > graph, int w, int s, int u, int v, map<int, vector<int> > &dd, map<int, int> &d, map<int, int> &pi, map<int, int> &q)
+bool bellman_ford(map<int, map<int, int> > graph, int s, map<int, vector<int> > &dd)
 {
+  int u, v, w;
+  map<int, int> d, pi;
   initialize_single_source(graph, s, d, pi);
   for(map<int, map<int, int> >::iterator it = graph.begin(); it != graph.end(); it++)
   {

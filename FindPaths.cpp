@@ -2,30 +2,6 @@
 #include <iomanip>
 using namespace std;
 
-void solve_bellman_ford_instance(const string &graph_filename, const int s)
-{
-  map<int, map<int, int> > graph = load_graph(graph_filename);
-  map<int, vector<int> > dd;
-  map<int, int> d;
-  map<int, int> pi;
-  map<int, int> q;
-  int w, u, v;
-  bellman_ford(graph, w, s, u, v, dd, d, pi, q);
-  /*
-  for(map<int, map<int, double> >::iterator it = graph.begin(); it != graph.end(); it++){
-    vector<int> P; 
-    double C;
-    int u = it->first;
-    dijkstra_traceback(d, pi, s, u, P, C);
-    
-    cout << u << ": ";
-    for(vector<int>::iterator it2 = P.begin(); it2 != P.end(); it2++)
-    {
-      cout << *it2 << ",";
-    }
-  }
-  */
-}
 
 int main(int argc, char **argv)
 {
@@ -39,8 +15,12 @@ int main(int argc, char **argv)
   char *ch = const_cast<char*>(vertex.c_str());
   const int s = atoi(ch);
   cout << "input: " << graph_filename << ", " << s << endl;
-  solve_bellman_ford_instance(graph_filename, s);
+  map<int, map<int, int> > graph = load_graph(graph_filename);
   map<int, vector<int> > dd;
-  view_bellman_ford_solution(dd);
+  if(bellman_ford(graph, s, dd)){
+    view_bellman_ford_solution(dd);
+  } else {
+    cout << "Negative weight cycle detected in graph\n";
+  }
   return 0;
 }
