@@ -1,34 +1,30 @@
-#include "dijkstra.h"
+#include "bellman_ford.h"
 #include <iomanip>
 using namespace std;
 
-void project_part2(const string &graph_filename, const int s)
+void solve_bellman_ford_instance(const string &graph_filename, const int s)
 {
-  map<int, map<int, double> > graph = load_graph(graph_filename);
-  map<int, double> d;
+  map<int, map<int, int> > graph = load_graph(graph_filename);
+  map<int, vector<int> > dd;
+  map<int, int> d;
   map<int, int> pi;
-  dijkstra(graph, s, d, pi);
+  map<int, int> q;
+  int w, u, v;
+  bellman_ford(graph, w, s, u, v, dd, d, pi, q);
+  /*
   for(map<int, map<int, double> >::iterator it = graph.begin(); it != graph.end(); it++){
     vector<int> P; 
     double C;
     int u = it->first;
     dijkstra_traceback(d, pi, s, u, P, C);
+    
     cout << u << ": ";
     for(vector<int>::iterator it2 = P.begin(); it2 != P.end(); it2++)
     {
       cout << *it2 << ",";
     }
-    cout << fixed << showpoint;
-    cout << setprecision(1);
-    if(C == DBL_MAX)
-    {
-      cout << " Cost: Infinity.\n";
-    }
-    else
-    {
-      cout << " Cost: " << C << ".\n";
-    }
   }
+  */
 }
 
 int main(int argc, char **argv)
@@ -42,6 +38,8 @@ int main(int argc, char **argv)
   const string vertex(argv[2]);
   char *ch = const_cast<char*>(vertex.c_str());
   const int s = atoi(ch);
-  project_part2(graph_filename, s); 
+  solve_bellman_ford_instance(graph_filename, s);
+  map<int, vector<int> > dd;
+  view_bellman_ford_solution(dd);
   return 0;
 }
