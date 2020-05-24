@@ -174,16 +174,16 @@ double get_weight(map<int, map<int, double> > graph, int v1, int v2)
   return DBL_MAX;
 }
 */
-void initialize_single_source(map<int, map<int, double> > graph, int s, map<int, double> &d, map<int, int> &pi)
+void initialize_single_source(map<int, map<int, int> > graph, int s, map<int, int> &d, map<int, int> &pi)
 {
-  for(map<int, map<int, double> >::iterator it = graph.begin(); it != graph.end(); it++){
-    d[it->first] = DBL_MAX;
+  for(map<int, map<int, int> >::iterator it = graph.begin(); it != graph.end(); it++){
+    d[it->first] = INT_MAX;
     pi[it->first] = INT_MAX;
   }
-  d[s] = 0.0;
+  d[s] = 0;
   pi[s] = INT_MAX;
 }
-
+/*
 void view_d(map<int, double> d)
 {
   cout << "d:\n";
@@ -201,7 +201,7 @@ void view_pi(map<int, int> pi)
     cout << it->first << "," << it->second << endl;
   }
 }
-
+*/
 
 void relax(map<int, map<int, int> > graph, int u, int v, map<int, int> &d, map<int, int> &pi, map<int, int> &q)
 {
@@ -225,33 +225,26 @@ void relax(map<int, map<int, int> > graph, int u, int v, map<int, int> &d, map<i
   }
 }
 
-void relax_with_history(int u, int v, int w)
+void relax_with_history(map<int, vector<int> > dd, int u, int v, int w, map<int, int> &d, map<int, int> &pi, map<int, int> &q)
 {
-  map<vector<int>, int> dd;
-  map<int, map<int, int> > g;
-  map<int, int> d;
-  map<int, int> pi;
-  map<int, int> q;
-  relax(g, u, v, d, pi, q);
+  relax(dd, u, v, d, pi, q);
+  //for(map<int, vector<int> >::iterator it = dd.begin(); it != dd.end(); it++)
   //dd[v].insert(d[v]);
 }
 
-bool bellman_ford(map<int, map<int, double> > graph, int w, int s)
+bool bellman_ford(map<int, map<int, int> > graph, int w, int s, int u, int v, map<int, int> &d, map <int, int> &pi, map<int, int> &q)
 {
-  initialize_single_source(graph, s);
-  int u, v;
-  map<int, int> d;
-  w_uv = INT_MAX;
-  for(int i=1; i < V; i++)
+  initialize_single_source(graph, s, d, pi);
+  for(map<int, map<int, int> >::iterator it = graph.begin(); it != graph.end(); it++)
   {
-    for(int j = 1; j <= V; j++)
+    for(map<int, int>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++)
     {
-      relax_with_history(u, v, w);
+      relax_with_history(graph, u, v, w, d, pi, q);
     }
   }
-  for(int j = 1; j <= V; j++)
+  for(map<int, int>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++)
   {
-    if(d[v] > d[u] + w_uv)
+    if(d[v] > d[u] + INT_MAX)
       return false;
   }
   return true; 
