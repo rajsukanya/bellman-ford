@@ -38,6 +38,7 @@ int main(int argc, char **argv)
   const string vertex(argv[2]);
   char *ch = const_cast<char*>(vertex.c_str());
   const int s = atoi(ch);
+  cout << "input: " << graph_filename << ", " << s << endl;
   solve_bellman_ford_instance(graph_filename, s);
   map<int, vector<int> > dd;
   view_bellman_ford_solution(dd);

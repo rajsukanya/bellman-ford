@@ -133,6 +133,7 @@ void relax(int u, int v, int w, map<int, map<int, int> > graph, map<int, int> &d
 void relax_with_history(int u, int v, int w, map<int, map<int, int> > graph, map<int, vector<int> > &dd, map<int, int> &d, map<int, int> &pi, map<int, int> &q)
 {
   relax(u, v, w, graph, d, pi, q);
+  /*
   for(map<int, vector<int> >::iterator it = dd.begin(); it != dd.end(); it++)
   {
     for(vector<int>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++)
@@ -140,6 +141,7 @@ void relax_with_history(int u, int v, int w, map<int, map<int, int> > graph, map
       dd.insert(it2->second);
     }
   }
+  */
 }
 
 bool bellman_ford(map<int, map<int, int> > graph, int w, int s, int u, int v, map<int, vector<int> > &dd, map<int, int> &d, map<int, int> &pi, map<int, int> &q)
@@ -152,9 +154,12 @@ bool bellman_ford(map<int, map<int, int> > graph, int w, int s, int u, int v, ma
     {
       v = it2->first;
       w = it2->second;
-      relax_with_history(u, v, w, graph, dd, d, pi, q);
+      cout << u << ", " << v << ", " << w << endl;
+      //relax_with_history(u, v, w, graph, dd, d, pi, q);
     }
   }
+  return true;
+  /*
   //WRONG
   for(map<int, int>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++)
   {
@@ -162,10 +167,12 @@ bool bellman_ford(map<int, map<int, int> > graph, int w, int s, int u, int v, ma
       return false;
   }
   return true; 
+  */
 }
 
-void view_bellman_ford_instance(map<int, vector<int> > &dd)
+void view_bellman_ford_solution(map<int, vector<int> > &dd)
 {
+  /*
   for(map<int, vector<int> >::iterator it = dd.begin(); it != dd.end(); it++)
   {
     for(vector<int>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++)
@@ -174,4 +181,5 @@ void view_bellman_ford_instance(map<int, vector<int> > &dd)
     }
     cout << endl;
   }
+  */
 }
